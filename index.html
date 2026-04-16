@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CaptionVerse — Premium Captions</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --neon-blue:#00d4ff;
+  --neon-purple:#b400ff;
+  --neon-pink:#ff00c8;
+  --neon-green:#00ff88;
+  --neon-orange:#ff6600;
+  --bg-dark:#050510;
+  --bg-card:rgba(255,255,255,0.04);
+  --bg-card-hover:rgba(255,255,255,0.08);
+  --border-glass:rgba(255,255,255,0.1);
+  --text-primary:#f0f0ff;
+  --text-muted:rgba(200,200,230,0.6);
+  --font-display:'Orbitron',monospace;
+  --font-body:'Inter',sans-serif;
+  --font-accent:'Rajdhani',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg-dark);color:var(--text-primary);font-family:var(--font-body);overflow-x:hidden;min-height:100vh}
+
+/* PARTICLES */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+/* ANIMATED BG */
+.bg-gradient{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 20% 20%, rgba(0,212,255,0.06) 0%, transparent 50%),
+             radial-gradient(ellipse at 80% 80%, rgba(180,0,255,0.06) 0%, transparent 50%),
+             radial-gradient(ellipse at 50% 50%, rgba(255,0,200,0.03) 0%, transparent 60%);
+  animation:bgShift 12s ease-in-out infinite alternate;
+}
+@keyframes bgShift{
+  0%{background-position:0% 0%}
+  50%{background-position:100% 100%}
+  100%{background-position:50% 50%}
+}
+
+/* NAVBAR */
+nav{
+  position:fixed;top:0;width:100%;z-index:1000;
+  background:rgba(5,5,16,0.7);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border-glass);
+  padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.3s;
+}
+nav.scrolled{background:rgba(5,5,16,0.95);box-shadow:0 0 30px rgba(0,212,255,0.1)}
+.logo{font-family:var(--font-display);font-size:1.4rem;font-weight:900;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;letter-spacing:2px;
+}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:all 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--neon-blue);transition:width 0.3s}
+.nav-links a:hover{color:var(--neon-blue)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--neon-blue);transition:all 0.3s;border-radius:2px}
+.mobile-menu{display:none;position:fixed;top:70px;left:0;width:100%;background:rgba(5,5,16,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-glass);padding:1.5rem 2rem;z-index:999;flex-direction:column;gap:1.5rem}
+.mobile-menu a{color:var(--text-muted);text-decoration:none;font-size:1rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s}
+.mobile-menu a:hover{color:var(--neon-blue)}
+.mobile-menu.open{display:flex}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:6rem 2rem 4rem;position:relative;z-index:1;
+}
+.hero-content{max-width:800px}
+.hero-badge{
+  display:inline-block;margin-bottom:1.5rem;
+  padding:0.4rem 1.2rem;border-radius:50px;
+  background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);
+  font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--neon-blue);
+  font-family:var(--font-accent);
+  animation:fadeInDown 0.8s ease both;
+}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.5rem,7vw,5rem);font-weight:900;
+  line-height:1.1;margin-bottom:1.5rem;
+  animation:fadeInUp 0.8s ease 0.2s both;
+}
+.hero h1 .line1{display:block;color:var(--text-primary)}
+.hero h1 .line2{
+  display:block;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple),var(--neon-pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200% auto;animation:gradientShift 3s linear infinite;
+}
+@keyframes gradientShift{0%{background-position:0%}100%{background-position:200%}}
+.hero p{
+  font-size:1.1rem;color:var(--text-muted);max-width:520px;margin:0 auto 2.5rem;line-height:1.7;
+  animation:fadeInUp 0.8s ease 0.4s both;
+}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeInUp 0.8s ease 0.6s both}
+.btn-primary{
+  padding:0.85rem 2rem;border-radius:8px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  color:#fff;font-family:var(--font-accent);font-size:1rem;font-weight:600;letter-spacing:1px;
+  transition:all 0.3s;box-shadow:0 0 20px rgba(0,212,255,0.3);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,255,0.5)}
+.btn-secondary{
+  padding:0.85rem 2rem;border-radius:8px;cursor:pointer;
+  background:transparent;border:1px solid var(--border-glass);
+  color:var(--text-primary);font-family:var(--font-accent);font-size:1rem;font-weight:600;letter-spacing:1px;
+  transition:all 0.3s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;
+  backdrop-filter:blur(10px);
+}
+.btn-secondary:hover{border-color:var(--neon-purple);color:var(--neon-purple);box-shadow:0 0 20px rgba(180,0,255,0.2)}
+.scroll-indicator{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--text-muted);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;
+  animation:bounce 2s infinite;
+}
+.scroll-indicator i{color:var(--neon-blue)}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+/* SECTION BASE */
+section{position:relative;z-index:1}
+.section-header{text-align:center;margin-bottom:3rem}
+.section-label{display:inline-block;margin-bottom:0.75rem;font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--neon-blue);font-family:var(--font-accent);font-weight:600}
+.section-title{font-family:var(--font-display);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;margin-bottom:1rem}
+.section-title span{background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-desc{color:var(--text-muted);max-width:500px;margin:0 auto;line-height:1.7}
+.container{max-width:1200px;margin:0 auto;padding:0 2rem}
+
+/* CAPTIONS SECTION */
+#captions{padding:6rem 0}
+.search-bar{
+  display:flex;gap:1rem;max-width:600px;margin:0 auto 2.5rem;
+  animation:fadeInUp 0.6s ease both;
+}
+.search-input-wrap{flex:1;position:relative}
+.search-input-wrap i{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:0.9rem}
+#searchInput{
+  width:100%;padding:0.85rem 1rem 0.85rem 2.8rem;
+  background:var(--bg-card);border:1px solid var(--border-glass);border-radius:10px;
+  color:var(--text-primary);font-family:var(--font-body);font-size:0.95rem;
+  backdrop-filter:blur(10px);transition:all 0.3s;outline:none;
+}
+#searchInput:focus{border-color:var(--neon-blue);box-shadow:0 0 20px rgba(0,212,255,0.15)}
+#searchInput::placeholder{color:var(--text-muted)}
+
+/* CATEGORIES */
+.category-tabs{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem}
+.cat-btn{
+  padding:0.5rem 1.3rem;border-radius:50px;border:1px solid var(--border-glass);
+  background:var(--bg-card);color:var(--text-muted);font-family:var(--font-accent);font-size:0.85rem;font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.3s;backdrop-filter:blur(10px);
+}
+.cat-btn:hover,.cat-btn.active{background:rgba(0,212,255,0.1);border-color:var(--neon-blue);color:var(--neon-blue);box-shadow:0 0 15px rgba(0,212,255,0.2)}
+.cat-btn[data-cat="sad"].active{background:rgba(100,100,255,0.1);border-color:#6464ff;color:#6464ff;box-shadow:0 0 15px rgba(100,100,255,0.2)}
+.cat-btn[data-cat="love"].active{background:rgba(255,0,100,0.1);border-color:var(--neon-pink);color:var(--neon-pink);box-shadow:0 0 15px rgba(255,0,200,0.2)}
+.cat-btn[data-cat="attitude"].active{background:rgba(255,102,0,0.1);border-color:var(--neon-orange);color:var(--neon-orange);box-shadow:0 0 15px rgba(255,102,0,0.2)}
+.cat-btn[data-cat="motivation"].active{background:rgba(0,255,136,0.1);border-color:var(--neon-green);color:var(--neon-green);box-shadow:0 0 15px rgba(0,255,136,0.2)}
+
+/* CAPTION CARDS */
+.captions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.caption-card{
+  background:var(--bg-card);border:1px solid var(--border-glass);border-radius:16px;
+  padding:1.5rem;backdrop-filter:blur(15px);
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  cursor:default;position:relative;overflow:hidden;
+}
+.caption-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--neon-color,var(--neon-blue)),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.caption-card:hover{transform:translateY(-6px);background:var(--bg-card-hover);border-color:rgba(255,255,255,0.18);box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px var(--glow-color,rgba(0,212,255,0.1))}
+.caption-card:hover::before{opacity:1}
+.caption-card[data-cat="sad"]{--neon-color:#6464ff;--glow-color:rgba(100,100,255,0.15)}
+.caption-card[data-cat="love"]{--neon-color:var(--neon-pink);--glow-color:rgba(255,0,200,0.15)}
+.caption-card[data-cat="attitude"]{--neon-color:var(--neon-orange);--glow-color:rgba(255,102,0,0.15)}
+.caption-card[data-cat="motivation"]{--neon-color:var(--neon-green);--glow-color:rgba(0,255,136,0.15)}
+.card-tag{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-accent);font-weight:600;
+  padding:0.3rem 0.8rem;border-radius:50px;margin-bottom:1rem;
+}
+.card-tag[data-cat="all"]{background:rgba(0,212,255,0.1);color:var(--neon-blue);border:1px solid rgba(0,212,255,0.2)}
+.card-tag[data-cat="sad"]{background:rgba(100,100,255,0.1);color:#6464ff;border:1px solid rgba(100,100,255,0.2)}
+.card-tag[data-cat="love"]{background:rgba(255,0,200,0.1);color:var(--neon-pink);border:1px solid rgba(255,0,200,0.2)}
+.card-tag[data-cat="attitude"]{background:rgba(255,102,0,0.1);color:var(--neon-orange);border:1px solid rgba(255,102,0,0.2)}
+.card-tag[data-cat="motivation"]{background:rgba(0,255,136,0.1);color:var(--neon-green);border:1px solid rgba(0,255,136,0.2)}
+.caption-text{
+  font-size:0.95rem;line-height:1.7;color:var(--text-primary);margin-bottom:1.2rem;
+  font-style:italic;font-weight:300;
+}
+.caption-text::before{content:'"';font-size:2rem;color:rgba(0,212,255,0.3);line-height:0;vertical-align:-0.5rem;margin-right:2px}
+.caption-text::after{content:'"';font-size:2rem;color:rgba(0,212,255,0.3);line-height:0;vertical-align:-0.5rem;margin-left:2px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.copy-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.45rem 1rem;border-radius:6px;border:1px solid var(--border-glass);
+  background:transparent;color:var(--text-muted);font-family:var(--font-accent);font-size:0.8rem;font-weight:600;letter-spacing:1px;
+  cursor:pointer;transition:all 0.25s;
+}
+.copy-btn:hover{border-color:var(--neon-blue);color:var(--neon-blue);background:rgba(0,212,255,0.08);box-shadow:0 0 10px rgba(0,212,255,0.15)}
+.copy-btn.copied{border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.1)}
+.no-results{text-align:center;padding:4rem 0;color:var(--text-muted);display:none}
+.no-results i{font-size:3rem;display:block;margin-bottom:1rem;opacity:0.3}
+
+/* ABOUT */
+#about{padding:6rem 0;background:linear-gradient(180deg,transparent,rgba(180,0,255,0.03),transparent)}
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-avatar-wrap{position:relative;display:flex;justify-content:center}
+.about-avatar{
+  width:280px;height:280px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(180,0,255,0.15));
+  border:2px solid rgba(0,212,255,0.2);
+  display:flex;align-items:center;justify-content:center;font-size:7rem;
+  position:relative;overflow:hidden;
+}
+.about-avatar::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(transparent 270deg,var(--neon-blue) 360deg);
+  animation:rotateBorder 3s linear infinite;
+}
+.about-avatar-inner{
+  position:absolute;inset:3px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(180,0,255,0.08));
+  display:flex;align-items:center;justify-content:center;font-size:7rem;
+  backdrop-filter:blur(10px);
+}
+.about-ring{
+  position:absolute;inset:-15px;border-radius:50%;
+  border:1px dashed rgba(0,212,255,0.15);animation:rotateBorder 8s linear infinite reverse;
+}
+@keyframes rotateBorder{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.about-text h3{font-family:var(--font-display);font-size:1.8rem;margin-bottom:1rem}
+.about-text h3 span{background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.about-text p{color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0}
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--border-glass);border-radius:12px;
+  padding:1rem;text-align:center;backdrop-filter:blur(10px);transition:all 0.3s;
+}
+.stat-card:hover{border-color:var(--neon-blue);box-shadow:0 0 20px rgba(0,212,255,0.1)}
+.stat-num{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--neon-blue)}
+.stat-label{font-size:0.7rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-top:0.25rem}
+.social-links{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.5rem}
+.social-link{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.6rem 1.2rem;border-radius:8px;border:1px solid var(--border-glass);
+  background:var(--bg-card);color:var(--text-muted);text-decoration:none;
+  font-size:0.85rem;font-family:var(--font-accent);font-weight:600;letter-spacing:1px;
+  transition:all 0.3s;
+}
+.social-link:hover{border-color:var(--neon-purple);color:var(--neon-purple);box-shadow:0 0 15px rgba(180,0,255,0.2)}
+
+/* CONTACT */
+#contact{padding:6rem 0}
+.contact-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start}
+.contact-info h3{font-family:var(--font-display);font-size:1.5rem;margin-bottom:1rem}
+.contact-info p{color:var(--text-muted);line-height:1.8;margin-bottom:2rem}
+.contact-items{display:flex;flex-direction:column;gap:1rem}
+.contact-item{
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem;background:var(--bg-card);border:1px solid var(--border-glass);
+  border-radius:12px;backdrop-filter:blur(10px);transition:all 0.3s;
+}
+.contact-item:hover{border-color:var(--neon-blue);box-shadow:0 0 15px rgba(0,212,255,0.1)}
+.contact-icon{
+  width:42px;height:42px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(180,0,255,0.15));
+  display:flex;align-items:center;justify-content:center;color:var(--neon-blue);flex-shrink:0;
+}
+.contact-item-text span{display:block;font-size:0.7rem;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.2rem}
+.contact-item-text p{font-size:0.9rem;color:var(--text-primary)}
+.contact-form{
+  background:var(--bg-card);border:1px solid var(--border-glass);border-radius:20px;
+  padding:2rem;backdrop-filter:blur(15px);
+}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-accent);font-weight:600;margin-bottom:0.5rem}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;padding:0.85rem 1rem;
+  background:rgba(255,255,255,0.03);border:1px solid var(--border-glass);border-radius:10px;
+  color:var(--text-primary);font-family:var(--font-body);font-size:0.95rem;
+  outline:none;transition:all 0.3s;
+}
+.form-group textarea{min-height:130px;resize:vertical}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{
+  border-color:var(--neon-blue);box-shadow:0 0 20px rgba(0,212,255,0.12);background:rgba(0,212,255,0.04);
+}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(200,200,230,0.35)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.submit-btn{
+  width:100%;padding:1rem;border-radius:10px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  color:#fff;font-family:var(--font-accent);font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  transition:all 0.3s;box-shadow:0 0 20px rgba(0,212,255,0.25);
+  display:flex;align-items:center;justify-content:center;gap:0.75rem;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,255,0.45)}
+.submit-btn:active{transform:translateY(0)}
+.form-success{
+  display:none;text-align:center;padding:2rem;
+  background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:12px;color:var(--neon-green);
+}
+.form-success i{font-size:2.5rem;display:block;margin-bottom:0.75rem}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;border-top:1px solid var(--border-glass);
+  background:rgba(5,5,16,0.8);backdrop-filter:blur(20px);padding:3rem 2rem 2rem;
+  text-align:center;
+}
+.footer-logo{font-family:var(--font-display);font-size:1.5rem;font-weight:900;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;margin-bottom:0.75rem;
+}
+.footer-tagline{color:var(--text-muted);font-size:0.85rem;margin-bottom:2rem}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;list-style:none}
+.footer-links a{color:var(--text-muted);text-decoration:none;font-size:0.85rem;font-family:var(--font-accent);letter-spacing:1px;text-transform:uppercase;transition:color 0.3s}
+.footer-links a:hover{color:var(--neon-blue)}
+.footer-social{display:flex;gap:0.75rem;justify-content:center;margin-bottom:2.5rem}
+.footer-social a{
+  width:38px;height:38px;border-radius:8px;
+  background:var(--bg-card);border:1px solid var(--border-glass);
+  display:inline-flex;align-items:center;justify-content:center;color:var(--text-muted);
+  text-decoration:none;transition:all 0.3s;
+}
+.footer-social a:hover{border-color:var(--neon-blue);color:var(--neon-blue);box-shadow:0 0 12px rgba(0,212,255,0.2)}
+.footer-bottom{font-size:0.8rem;color:rgba(200,200,230,0.35);border-top:1px solid var(--border-glass);padding-top:1.5rem}
+.footer-bottom span{color:var(--neon-pink)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;z-index:9999;
+  background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);
+  color:var(--neon-green);padding:0.85rem 1.5rem;border-radius:10px;
+  font-family:var(--font-accent);font-size:0.9rem;font-weight:600;letter-spacing:1px;
+  backdrop-filter:blur(20px);display:flex;align-items:center;gap:0.75rem;
+  transform:translateX(200%);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.show{transform:translateX(0)}
+
+/* ANIMATIONS */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.7s cubic-bezier(0.34,1.56,0.64,1)}
+.reveal.visible{opacity:1;transform:none}
+
+/* GLITCH TEXT */
+.glitch{position:relative}
+.glitch::before,.glitch::after{
+  content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(135deg,var(--neon-blue),var(--neon-purple),var(--neon-pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.glitch::before{animation:glitch1 4s infinite;left:2px;text-shadow:none;clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%)}
+.glitch::after{animation:glitch2 4s infinite;left:-2px;clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%)}
+@keyframes glitch1{0%,90%,100%{transform:none;opacity:0}92%{transform:skew(-3deg);opacity:0.8}94%{transform:none;opacity:0}96%{transform:skew(2deg);opacity:0.6}98%{transform:none;opacity:0}}
+@keyframes glitch2{0%,88%,100%{transform:none;opacity:0}90%{transform:skew(3deg);opacity:0.7}92%{transform:none;opacity:0}95%{transform:skew(-2deg);opacity:0.5}97%{transform:none;opacity:0}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .about-inner,.contact-inner{grid-template-columns:1fr}
+  .about-avatar-wrap{order:-1}
+  .about-avatar{width:220px;height:220px}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero h1{font-size:2.2rem}
+  .form-row{grid-template-columns:1fr}
+  .about-stats{grid-template-columns:1fr 1fr}
+  .captions-grid{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .container{padding:0 1.25rem}
+  .hero{padding:5rem 1.25rem 3rem}
+  nav{padding:1rem 1.25rem}
+}
+
+/* DIVIDER */
+.section-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-glass),transparent);margin:0;border:none}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+<div class="bg-gradient"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#hero" class="logo"><i class="fa-solid fa-bolt" style="font-size:0.9rem"></i> CaptionVerse</a>
+  <ul class="nav-links">
+    <li><a href="#captions">Captions</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#captions" onclick="toggleMenu()">Captions</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fa-solid fa-star" style="font-size:0.65rem"></i> &nbsp; 200+ Premium Captions</div>
+    <h1>
+      <span class="line1">Words That Hit</span>
+      <span class="line2 glitch" data-text="Differently.">Differently.</span>
+    </h1>
+    <p>Discover handpicked captions for every mood — from soul-stirring sadness to fire-forged attitude. Copy, share, and make them yours.</p>
+    <div class="hero-btns">
+      <a href="#captions" class="btn-primary"><i class="fa-solid fa-fire"></i> Browse Captions</a>
+      <a href="#about" class="btn-secondary"><i class="fa-solid fa-user-astronaut"></i> About Me</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <i class="fa-solid fa-chevron-down"></i>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- CAPTIONS SECTION -->
+<section id="captions">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label"><i class="fa-solid fa-quote-left" style="font-size:0.7rem"></i> &nbsp; Caption Gallery</div>
+      <h2 class="section-title">Find Your <span>Perfect Caption</span></h2>
+      <p class="section-desc">Filter by vibe, search by keyword, and copy with a single click.</p>
+    </div>
+    <div class="search-bar reveal">
+      <div class="search-input-wrap">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search captions..." oninput="filterCaptions()"/>
+      </div>
+    </div>
+    <div class="category-tabs reveal">
+      <button class="cat-btn active" data-cat="all" onclick="setCategory('all',this)"><i class="fa-solid fa-layer-group" style="font-size:0.75rem"></i> All</button>
+      <button class="cat-btn" data-cat="sad" onclick="setCategory('sad',this)"><i class="fa-solid fa-moon" style="font-size:0.75rem"></i> Sad</button>
+      <button class="cat-btn" data-cat="love" onclick="setCategory('love',this)"><i class="fa-solid fa-heart" style="font-size:0.75rem"></i> Love</button>
+      <button class="cat-btn" data-cat="attitude" onclick="setCategory('attitude',this)"><i class="fa-solid fa-fire-flame-curved" style="font-size:0.75rem"></i> Attitude</button>
+      <button class="cat-btn" data-cat="motivation" onclick="setCategory('motivation',this)"><i class="fa-solid fa-rocket" style="font-size:0.75rem"></i> Motivation</button>
+    </div>
+    <div class="captions-grid" id="captionsGrid"></div>
+    <div class="no-results" id="noResults"><i class="fa-solid fa-ghost"></i><span>No captions found. Try a different search.</span></div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label"><i class="fa-solid fa-user" style="font-size:0.7rem"></i> &nbsp; The Creator</div>
+      <h2 class="section-title">About <span>Me</span></h2>
+    </div>
+    <div class="about-inner">
+      <div class="about-avatar-wrap reveal">
+        <div style="position:relative">
+          <div class="about-avatar">
+            <div class="about-avatar-inner">✦</div>
+          </div>
+          <div class="about-ring"></div>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <h3>Hey, I'm <span>Alex Nova</span></h3>
+        <p>A creative soul obsessed with the power of words. I've spent years crafting captions that hit deep — the kind that make your followers stop scrolling and feel something real.</p>
+        <p>Every caption here is carefully written, tested, and curated for maximum impact. Whether you're riding high or feeling low, there's a caption here that speaks your truth.</p>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">200+</div>
+            <div class="stat-label">Captions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">50K</div>
+            <div class="stat-label">Users</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Vibes</div>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="#" class="social-link"><i class="fa-brands fa-instagram" style="font-size:0.9rem"></i> Instagram</a>
+          <a href="#" class="social-link"><i class="fa-brands fa-twitter" style="font-size:0.9rem"></i> Twitter</a>
+          <a href="#" class="social-link"><i class="fa-brands fa-linkedin" style="font-size:0.9rem"></i> LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label"><i class="fa-solid fa-envelope" style="font-size:0.7rem"></i> &nbsp; Get In Touch</div>
+      <h2 class="section-title">Say <span>Hello</span></h2>
+      <p class="section-desc">Have a request, collab idea, or just want to chat? Drop me a message.</p>
+    </div>
+    <div class="contact-inner">
+      <div class="contact-info reveal">
+        <h3>Let's Connect</h3>
+        <p>Whether you want custom captions, a collaboration, or just vibing — I'm always open to connecting with creative people.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="contact-item-text"><span>Email</span><p>hello@captionverse.io</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="contact-item-text"><span>Location</span><p>Digital Universe, Everywhere</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+            <div class="contact-item-text"><span>Response time</span><p>Within 24 hours</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div id="formContent">
+          <div class="form-row">
+            <div class="form-group"><label>Your Name</label><input type="text" placeholder="Alex..." id="fname"/></div>
+            <div class="form-group"><label>Your Email</label><input type="email" placeholder="you@email.com" id="femail"/></div>
+          </div>
+          <div class="form-group"><label>Subject</label><input type="text" placeholder="Caption request, collab..." id="fsubject"/></div>
+          <div class="form-group"><label>Message</label><textarea placeholder="Tell me what's on your mind..." id="fmessage"></textarea></div>
+          <button class="submit-btn" onclick="submitForm()"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <i class="fa-solid fa-circle-check"></i>
+          <strong>Message sent!</strong>
+          <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem">I'll get back to you within 24 hours. ✦</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">✦ CaptionVerse</span>
+  <p class="footer-tagline">Words for every mood. Vibes for every soul.</p>
+  <ul class="footer-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#captions">Captions</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-social">
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#"><i class="fa-brands fa-pinterest"></i></a>
+  </div>
+  <div class="footer-bottom">
+    Made with <span>♥</span> by Alex Nova &nbsp;·&nbsp; © 2025 CaptionVerse &nbsp;·&nbsp; All rights reserved
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fa-solid fa-check"></i> <span id="toastMsg">Copied to clipboard!</span></div>
+
+<script>
+// ===== CAPTION DATA =====
+const captions = [
+  // SAD
+  {cat:'sad',text:'I smile not because I am happy, but because I am tired of explaining why I am not.'},
+  {cat:'sad',text:'Sometimes the person who tries to keep everyone happy is the most lonely one.'},
+  {cat:'sad',text:'I am not okay but thanks for not asking.'},
+  {cat:'sad',text:'The worst kind of pain is when you smile just to stop the tears from falling.'},
+  {cat:'sad',text:'I miss the version of me that did not know how broken things could get.'},
+  {cat:'sad',text:'Silence is the loudest cry. Most people never understand that.'},
+  {cat:'sad',text:'It hurts not when they leave — it hurts when they pretend they never cared.'},
+  {cat:'sad',text:'Some nights feel like they will never end, and some people feel like they already have.'},
+  {cat:'sad',text:'I built a world for you and you burned it down and called it my fault.'},
+  {cat:'sad',text:'Raindrops are not weather. They are all the tears the sky held in too long.'},
+
+  // LOVE
+  {cat:'love',text:'You are the chaos I always prayed for and the calm I never knew I needed.'},
+  {cat:'love',text:'I found home in your laugh and honestly I never want to leave.'},
+  {cat:'love',text:'Love is not a feeling. It is choosing someone over and over in a world full of options.'},
+  {cat:'love',text:'You ruin me in the best possible way.'},
+  {cat:'love',text:'I am not a poet but you make me want to write forever.'},
+  {cat:'love',text:'Every sunset looks better since you gave me a reason to stay.'},
+  {cat:'love',text:'My favorite place in the world is right next to you — anywhere counts.'},
+  {cat:'love',text:'You are the softness in a world that was too sharp for me.'},
+  {cat:'love',text:'I fell in love the way you fall asleep: slowly, then all at once.'},
+  {cat:'love',text:'Being with you is the only adventure I never want to end.'},
+
+  // ATTITUDE
+  {cat:'attitude',text:'I do not chase, I attract. What belongs to me will simply find its way.'},
+  {cat:'attitude',text:'Too glam to give a damn.'},
+  {cat:'attitude',text:'I am not rude. I am honest. There is a difference — learn it.'},
+  {cat:'attitude',text:'My circle is small because I am into quality, not quantity.'},
+  {cat:'attitude',text:'I did not change. I just stopped pretending to be someone you wanted me to be.'},
+  {cat:'attitude',text:'Underestimate me. That will be fun to watch.'},
+  {cat:'attitude',text:'I am not here to be average. I am here to be savage.'},
+  {cat:'attitude',text:'Born to stand out. Trying to blend in was never part of my plan.'},
+  {cat:'attitude',text:'Not everyone deserves a seat at my table — and that is perfectly fine.'},
+  {cat:'attitude',text:'My vibe is expensive and my standards are higher than your Wi-Fi signal.'},
+
+  // MOTIVATION
+  {cat:'motivation',text:'You did not come this far to only come this far. Keep going.'},
+  {cat:'motivation',text:'The grind does not stop when you are tired. It stops when you are done.'},
+  {cat:'motivation',text:'One day you will look back and be proud of how hard you fought for this.'},
+  {cat:'motivation',text:'Doubt me today. Watch me tomorrow.'},
+  {cat:'motivation',text:'Success is not a destination. It is the mindset you wake up with every single morning.'},
+  {cat:'motivation',text:'Your only competition is who you were yesterday.'},
+  {cat:'motivation',text:'Fall seven times. Stand up eight. The floor does not define you.'},
+  {cat:'motivation',text:'Dream it. Build it. Own it. Repeat.'},
+  {cat:'motivation',text:'Small steps every day still lead somewhere extraordinary over time.'},
+  {cat:'motivation',text:'The people who say it cannot be done should not interrupt the people doing it.'},
+];
+
+let activeCategory = 'all';
+
+function renderCaptions(list){
+  const grid = document.getElementById('captionsGrid');
+  const noRes = document.getElementById('noResults');
+  if(!list.length){grid.innerHTML='';noRes.style.display='block';return;}
+  noRes.style.display='none';
+  grid.innerHTML = list.map((c,i)=>`
+    <div class="caption-card" data-cat="${c.cat}" style="animation:fadeInUp 0.5s ease ${(i%9)*0.06}s both">
+      <div class="card-tag" data-cat="${c.cat}">${catIcon(c.cat)} ${c.cat.charAt(0).toUpperCase()+c.cat.slice(1)}</div>
+      <p class="caption-text">${c.text}</p>
+      <div class="card-footer">
+        <button class="copy-btn" onclick="copyCaption(this,'${escQ(c.text)}')">
+          <i class="fa-regular fa-copy"></i> Copy
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function catIcon(cat){
+  const icons={sad:'<i class="fa-solid fa-moon" style="font-size:0.65rem"></i>',love:'<i class="fa-solid fa-heart" style="font-size:0.65rem"></i>',attitude:'<i class="fa-solid fa-fire-flame-curved" style="font-size:0.65rem"></i>',motivation:'<i class="fa-solid fa-rocket" style="font-size:0.65rem"></i>'};
+  return icons[cat]||'';
+}
+function escQ(t){return t.replace(/'/g,"\\'")}
+
+function filterCaptions(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  let list = captions.filter(c=>activeCategory==='all'||c.cat===activeCategory);
+  if(q) list=list.filter(c=>c.text.toLowerCase().includes(q));
+  renderCaptions(list);
+}
+
+function setCategory(cat,btn){
+  activeCategory=cat;
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterCaptions();
+}
+
+function copyCaption(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.classList.add('copied');
+    btn.innerHTML='<i class="fa-solid fa-check"></i> Copied!';
+    showToast('Caption copied to clipboard!');
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="fa-regular fa-copy"></i> Copy';},2000);
+  });
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function submitForm(){
+  const name=document.getElementById('fname').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const msg=document.getElementById('fmessage').value.trim();
+  if(!name||!email||!msg){showToast('Please fill in all required fields.');return;}
+  document.getElementById('formContent').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+  showToast('Message sent successfully!');
+}
+
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// ===== SCROLL EFFECTS =====
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  nav.classList.toggle('scrolled',window.scrollY>50);
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-80) el.classList.add('visible');
+  });
+});
+
+// ===== PARTICLES =====
+(function(){
+  const canvas=document.getElementById('particles');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',()=>{resize();init();});
+  function rand(a,b){return a+Math.random()*(b-a);}
+  const colors=['rgba(0,212,255,','rgba(180,0,255,','rgba(255,0,200,','rgba(0,255,136,'];
+  function init(){
+    particles=[];
+    const n=Math.floor((W*H)/18000);
+    for(let i=0;i<n;i++){
+      particles.push({
+        x:rand(0,W),y:rand(0,H),r:rand(0.3,1.6),
+        vx:rand(-0.15,0.15),vy:rand(-0.2,-0.05),
+        color:colors[Math.floor(Math.random()*colors.length)],
+        life:rand(0.2,0.8),decay:rand(0.0005,0.002),
+        pulse:rand(0,Math.PI*2),pulseSpeed:rand(0.01,0.03)
+      });
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;p.pulse+=p.pulseSpeed;
+      if(p.life<=0||p.y<0){
+        p.y=H+5;p.x=rand(0,W);p.life=rand(0.4,0.9);
+      }
+      const opacity=p.life*(0.5+0.3*Math.sin(p.pulse));
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color+opacity+')';ctx.fill();
+      if(p.r>0.8){
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r*3,0,Math.PI*2);
+        ctx.fillStyle=p.color+(opacity*0.15)+')';ctx.fill();
+      }
+    });
+    // Draw connections
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x;
+        const dy=particles[i].y-particles[j].y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<80){
+          const alpha=(1-dist/80)*0.06;
+          ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(0,212,255,${alpha})`;ctx.lineWidth=0.5;ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  init();draw();
+})();
+
+// INIT
+renderCaptions(captions);
+setTimeout(()=>{
+  document.querySelectorAll('.reveal').forEach(el=>{
+    if(el.getBoundingClientRect().top<window.innerHeight-80) el.classList.add('visible');
+  });
+},100);
+</script>
+</body>
+</html>
